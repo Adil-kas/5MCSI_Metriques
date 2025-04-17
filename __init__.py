@@ -55,10 +55,6 @@ def submit_contact():
     # Afficher un message avec les informations envoyées
     return f"<h2>Merci {first_name} {last_name} pour votre message !</h2><p>{message}</p>"
 
-@app.route("/contact/")
-def contact():
-    return render_template("contact.html")
-
 
 if __name__ == "__main__":
     app.run(debug=True)
