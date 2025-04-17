@@ -1,5 +1,7 @@
 name: Industrialisation continue sur le serveur Alwaysdata
+
 on: push
+
 jobs:
   Connexion:
     runs-on: ubuntu-latest
@@ -12,6 +14,7 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           script: |
             cd $HOME/www/
+
   Copy:
     needs: Connexion
     runs-on: ubuntu-latest
@@ -28,12 +31,13 @@ jobs:
             git clone https://github.com/${{ github.repository }}.git
             # Vérifier si le répertoire de destination existe
             if [ "$(ls -A ./monflask)" ]; then
-             rsync -r ./$last_directory/ ./monflask
-             rm -rf ./$last_directory
-          else
-             echo "Le répertoire monflask de destination sur votre serveur n'existe pas"
-             exit 1
+              rsync -r ./$last_directory/ ./monflask
+              rm -rf ./$last_directory
+            else
+              echo "Le répertoire monflask de destination sur votre serveur n'existe pas"
+              exit 1
             fi
+
   Restart:
     needs: Copy
     runs-on: ubuntu-latest
@@ -45,12 +49,13 @@ jobs:
           if [ "$response_code" -eq 204 ]; then
             echo "Relance de votre site réussi"
           elif [ "$response_code" -eq 404 ]; then
-            echo "Vous n'avez pas renseigner correctement votre secret ALWAYSDATA_SITE_ID"
-            exit 1  # Quitter avec un code d'erreur
+            echo "Vous n'avez pas renseigné correctement votre secret ALWAYSDATA_SITE_ID"
+            exit 1
           elif [ "$response_code" -eq 401 ]; then
-            echo "Vous n'avez pas renseigner correctement votre secret ALWAYSDATA_TOKEN"
-          exit 1  # Quitter avec un code d'erreur
+            echo "Vous n'avez pas renseigné correctement votre secret ALWAYSDATA_TOKEN"
+            exit 1
           else
             echo "Échec du redémarrage avec le code de réponse : $response_code"
-            exit 1  # Quitter avec un code d'erreur
+            exit 1
           fi
+
