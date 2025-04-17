@@ -39,7 +39,17 @@ def monhistogramme():
 @app.route("/contact/")
 def contact():
     return render_template("contact.html")
+from flask import request
 
+@app.route("/submit_contact/", methods=["POST"])
+def submit_contact():
+    # Récupération des données envoyées par l'utilisateur via le formulaire
+    first_name = request.form.get('ADIL')
+    last_name = request.form.get('KASSOUL')
+    message = request.form.get('MOULES FRITES')
+    
+    # Afficher un message avec les informations envoyées
+    return f"<h2>Merci {first_name} {last_name} pour votre message !</h2><p>{message}</p>"
 
 
 if __name__ == "__main__":
