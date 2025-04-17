@@ -9,8 +9,8 @@ app = Flask(__name__)
                                                                                                                                        
 @app.route('/')
 def hello_world():
-  print("🚀 Déploiement réussi depuis GitHub Actions !")
-  return render_template('hello.html')
+    print("🚀 Déploiement réussi depuis GitHub Actions !")
+    return render_template('hello.html')
   
 if __name__ == "__main__":
   app.run(debug=True)
