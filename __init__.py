@@ -2,6 +2,7 @@ from flask import Flask, render_template, jsonify, request
 from urllib.request import urlopen
 from datetime import datetime
 import json
+from collections import Counter
 
 app = Flask(__name__)
 
