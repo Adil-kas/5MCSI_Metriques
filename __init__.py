@@ -47,5 +47,14 @@ def submit_contact():
     # Afficher un message avec les informations envoyées
     return f"<h2>Merci {first_name} {last_name} pour votre message !</h2><p>{message}</p>"
 
+from datetime import datetime
+
+@app.route('/extract-minutes/<date_string>')
+def extract_minutes(date_string):
+    date_object = datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%SZ')
+    minutes = date_object.minute
+    return jsonify({'minutes': minutes})
+
+
 if __name__ == "__main__":
     app.run(debug=True)
