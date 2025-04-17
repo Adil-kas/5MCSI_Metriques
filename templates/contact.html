@@ -1,67 +1,32 @@
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>Contact</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        margin: 0;
-        padding: 0;
-      }
-      .container {
-        width: 60%;
-        margin: auto;
-        padding: 20px;
-        background-color: #fff;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        margin-top: 50px;
-        border-radius: 8px;
-      }
-      h2 {
-        text-align: center;
-        color: #333;
-      }
-      label {
-        font-size: 1.2em;
-        display: block;
-        margin-bottom: 5px;
-        color: #333;
-      }
-      input, textarea {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 20px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-      }
-      button {
-        padding: 10px 20px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        font-size: 1.2em;
-        cursor: pointer;
-        width: 100%;
-      }
-      button:hover {
-        background-color: #45a049;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <h2>Contactez-nous</h2>
-      <form action="/submit_contact/" method="POST">
-        <label for="first_name">Prénom:</label>
-        <input type="text" id="first_name" name="first_name" required />
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Kasoul Adil</title>
+</head>
+<body>
+    <h1>Page de Contact</h1>
+    <p>Bienvenue sur ma page de contact !</p>
+    <p>Je m'appelle <strong>Kasoul Adil</strong>.</p>
+    <p>Message spécial : <strong>Moules Frites</strong></p>
 
-        <label for="last_name">Nom:</label>
-        <input type="text" id="last_name" name="last_name" required />
+    <h2>Formulaire de Contact</h2>
+    <form action="/submit_contact" method="POST">
+        <label for="name">Nom :</label><br>
+        <input type="text" id="name" name="name" required><br><br>
 
-        <label for="message">Message:</label>
-        <textarea id="message" name="message" rows="4" required></textarea>
+        <label for="email">Email :</label><br>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="message">Message :</label><br>
+        <textarea id="message" name="message" rows="4" cols="50" required></textarea><br><br>
+
+        <button type="submit">Envoyer</button>
+    </form>
+</body>
+</html>
+
 
         <button type="submit">Envoyer</button>
       </form>
