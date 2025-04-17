@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
     <title>Graphique des Commits</title>
-    <script src="https://www.gstatic.com/charts/loader.js"></script>
-  </head>
-  <body>
-    <h1>Commits par Minute</h1>
-    <div id="chart_div" style="width: 900px; height: 500px;"></div>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+</head>
+<body>
+    <h1>Graphique des Commits par Minute</h1>
+    <div id="chart_div"></div>
 
-    <script>
+    <script type="text/javascript">
       google.charts.load('current', { packages: ['corechart', 'bar'] });
       google.charts.setOnLoadCallback(drawChart);
 
@@ -17,28 +17,26 @@
         fetch('/api/commits/')
           .then(response => response.json())
           .then(data => {
-            const dataTable = new google.visualization.DataTable();
+            var dataTable = new google.visualization.DataTable();
             dataTable.addColumn('string', 'Minute');
             dataTable.addColumn('number', 'Commits');
 
-            data.forEach(item => {
-              dataTable.addRow([item.minute.toString(), item.commits]);
+            data.forEach(function(commitData) {
+              dataTable.addRow([commitData.minute.toString(), commitData.commits]);
             });
 
-            const options = {
-              title: 'Nombre de commits par minute',
-              hAxis: { title: 'Minute' },
-              vAxis: { title: 'Commits' },
-              legend: { position: 'none' }
+            var options = {
+              title: 'Nombre de Commits par Minute',
+              chartArea: { width: '50%' },
+              hAxis: { title: 'Minute', minValue: 0 },
+              vAxis: { title: 'Nombre de Commits' }
             };
 
-            const chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+            var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
             chart.draw(dataTable, options);
-          })
-          .catch(error => {
-            console.error("Erreur chargement commits:", error);
           });
       }
     </script>
-  </body>
+</body>
 </html>
+
