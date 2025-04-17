@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
 from urllib.request import urlopen
 from datetime import datetime
 import json
@@ -12,8 +12,8 @@ def hello_world():
 
 # Exercice 2 : route /contact/
 @app.route('/contact/')
-def MaPremiereAPI():
-    return "<h2>Ma page de contact</h2>"
+def contact():
+    return render_template("contact.html")
 
 # Exercice 3 : route /tawarano/
 @app.route('/tawarano/')
@@ -27,34 +27,25 @@ def meteo():
         temp_day_value = list_element.get('main', {}).get('temp') - 273.15  # Conversion Kelvin -> Celsius
         results.append({'Jour': dt_value, 'temp': temp_day_value})
     return jsonify(results=results)
-    
+
 @app.route("/rapport/")
 def mongraphique():
     return render_template("graphique.html")
-    
+
 @app.route("/histogramme/")
 def monhistogramme():
     return render_template("histogramme.html")
-    
-@app.route("/contact/")
-def contact():
-    return render_template("contact.html")
-from flask import request
 
-from flask import request
-
-from flask import request
-
+# Formulaire de contact : route pour soumettre les données
 @app.route("/submit_contact/", methods=["POST"])
 def submit_contact():
     # Récupération des données envoyées par l'utilisateur via le formulaire
     first_name = request.form.get('first_name')
     last_name = request.form.get('last_name')
     message = request.form.get('message')
-    
+
     # Afficher un message avec les informations envoyées
     return f"<h2>Merci {first_name} {last_name} pour votre message !</h2><p>{message}</p>"
-
 
 if __name__ == "__main__":
     app.run(debug=True)
