@@ -1,5 +1,5 @@
 from flask import Flask, render_template, jsonify, request
-from urllib.request import urlopen
+import requests
 from datetime import datetime
 import json
 
@@ -28,25 +28,31 @@ def meteo():
         results.append({'Jour': dt_value, 'temp': temp_day_value})
     return jsonify(results=results)
 
-@app.route("/rapport/")
-def mongraphique():
-    return render_template("graphique.html")
+# Route HTML du graphique de commits
+@app.route("/commits/")
+def commits_graph():
+    return render_template("commits.html")
 
-@app.route("/histogramme/")
-def monhistogramme():
-    return render_template("histogramme.html")
+# API JSON pour les données de commits
+@app.route("/api/commits/")
+def commits_data():
+    url = 'https://api.github.com/repos/OpenRSI/5MCSI_Metriques/commits'
+    response = requests.get(url)
+    commits_data = response.json()
 
-# Formulaire de contact : route pour soumettre les données
-@app.route("/submit_contact/", methods=["POST"])
-def submit_contact():
-    # Récupération des données envoyées par l'utilisateur via le formulaire
-    first_name = request.form.get('first_name')
-    last_name = request.form.get('last_name')
-    message = request.form.get('message')
+    commits_per_minute = {}
 
-    # Afficher un message avec les informations envoyées
-    return f"<h2>Merci {first_name} {last_name} pour votre message !</h2><p>{message}</p>"
+    for commit in commits_data:
+        try:
+            commit_date = commit['commit']['author']['date']
+            minute = datetime.strptime(commit_date, '%Y-%m-%dT%H:%M:%SZ').minute
+            commits_per_minute[minute] = commits_per_minute.get(minute, 0) + 1
+        except:
+            continue  # Juste au cas où certaines données sont mal formées
 
+    data = [{'minute': k, 'commits': v} for k, v in sorted(commits_per_minute.items())]
+    return jsonify(data)
+
+# Démarrage de l'application
 if __name__ == "__main__":
     app.run(debug=True)
-
