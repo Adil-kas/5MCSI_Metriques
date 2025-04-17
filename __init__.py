@@ -43,6 +43,8 @@ from flask import request
 
 from flask import request
 
+from flask import request
+
 @app.route("/submit_contact/", methods=["POST"])
 def submit_contact():
     # Récupération des données envoyées par l'utilisateur via le formulaire
@@ -51,8 +53,7 @@ def submit_contact():
     message = request.form.get('message')
     
     # Afficher un message avec les informations envoyées
-    return f"<h2>Merci {first_name} {last_name} pour votre message !</h2><p>{DOMINIQUE}</p>"
-
+    return f"<h2>Merci {first_name} {last_name} pour votre message !</h2><p>{message}</p>"
 
 if __name__ == "__main__":
     app.run(debug=True)
