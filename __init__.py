@@ -49,6 +49,22 @@ def submit_contact():
     return f"<h2>Merci {first_name} {last_name} pour votre message !</h2><p>{message}</p>"
 
 
+from flask import Flask, render_template, jsonify
+from urllib.request import urlopen
+from datetime import datetime
+import json
+from collections import Counter
+
+app = Flask(__name__)
+
+from flask import Flask, render_template, jsonify
+from urllib.request import urlopen
+from datetime import datetime
+import json
+from collections import Counter
+
+app = Flask(__name__)
+
 @app.route('/commits/')
 def affichecommits():
     url = "https://api.github.com/repos/OpenRSI/5MCSI_Metriques/commits"
@@ -60,6 +76,7 @@ def affichecommits():
         data = json.loads(raw_data.decode("utf-8"))
     except Exception as e:
         # Si l'API échoue, afficher l'erreur dans les logs
+        app.logger.error(f"Erreur lors de l'appel à l'API GitHub : {e}")
         return f"Erreur lors de l'appel à l'API GitHub : {e}"
 
     minutes_list = []
@@ -72,19 +89,21 @@ def affichecommits():
                 minutes_list.append(date_obj.strftime('%H:%M'))  # Format HH:MM
         except Exception as e:
             # Si la date du commit est mal formatée, afficher l'erreur dans les logs
-            print(f"Erreur lors de l'extraction de la date du commit: {e}")
+            app.logger.error(f"Erreur lors de l'extraction de la date du commit: {e}")
 
     # Si aucun commit n'a été trouvé ou si la liste est vide
     if not minutes_list:
+        app.logger.warning("Aucun commit valide trouvé.")
         return "Aucun commit valide trouvé."
 
     try:
         # 🧠 Tri chronologique
-        minute_counts = Counter(minutes_list)
+        minute_counts = Counter(minutes_list)  # Utilisation de Counter pour compter les occurrences
         sorted_items = sorted(minute_counts.items(), key=lambda x: datetime.strptime(x[0], "%H:%M"))
         minutes = [item[0] for item in sorted_items]
         counts = [item[1] for item in sorted_items]
     except Exception as e:
+        app.logger.error(f"Erreur lors du comptage des commits: {e}")
         return f"Erreur lors du comptage des commits: {e}"
 
     # Si tout se passe bien, afficher les résultats dans le template
