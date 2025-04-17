@@ -3,36 +3,36 @@
   <head>
     <meta charset="UTF-8" />
     <title>Graphique des Commits</title>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
   </head>
   <body>
-    <h2>Nombre de Commits par Minute</h2>
-    <div id="chart_div" style="width: 800px; height: 500px;"></div>
+    <h1>Commits par Minute</h1>
+    <div id="chart_div" style="width: 900px; height: 500px;"></div>
 
     <script>
       google.charts.load('current', { packages: ['corechart', 'bar'] });
-      google.charts.setOnLoadCallback(drawCommitsChart);
+      google.charts.setOnLoadCallback(drawChart);
 
-      function drawCommitsChart() {
+      function drawChart() {
         fetch('/api/commits/')
           .then(response => response.json())
           .then(data => {
-            var dataTable = new google.visualization.DataTable();
+            const dataTable = new google.visualization.DataTable();
             dataTable.addColumn('string', 'Minute');
             dataTable.addColumn('number', 'Commits');
 
-            data.forEach(entry => {
-              dataTable.addRow([entry.minute.toString(), entry.commits]);
+            data.forEach(item => {
+              dataTable.addRow([item.minute.toString(), item.commits]);
             });
 
-            var options = {
-              title: 'Nombre de Commits par Minute',
-              chartArea: { width: '60%' },
-              hAxis: { title: 'Minute', minValue: 0 },
-              vAxis: { title: 'Commits' }
+            const options = {
+              title: 'Nombre de commits par minute',
+              hAxis: { title: 'Minute' },
+              vAxis: { title: 'Commits' },
+              legend: { position: 'none' }
             };
 
-            var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+            const chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
             chart.draw(dataTable, options);
           });
       }
